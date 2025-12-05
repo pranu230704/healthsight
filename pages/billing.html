@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HealthSight – Billing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/css/billing.css" />
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- ───────── Sidebar ───────── -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-avatar">H</div>
+          <div>
+            <div class="brand-text-title">HealthSight</div>
+            <div class="brand-text-sub">Hospital Admin</div>
+          </div>
+        </div>
+
+        <nav>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="appointments.html" class="sidebar-link">Appointments</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="doctors.html" class="sidebar-link">Doctors</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="patients.html" class="sidebar-link">Patients</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="pharmacy.html" class="sidebar-link">Pharmacy</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="billing.html" class="sidebar-link active">Billing</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="lab-reports.html" class="sidebar-link">Lab Reports</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="settings.html" class="sidebar-link">Settings</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          Billing view • Last settlement run <strong>10:15 AM</strong>
+        </div>
+      </aside>
+
+      <!-- ───────── Main Content ───────── -->
+      <main class="main">
+        <!-- Top bar -->
+        <header class="topbar">
+          <div class="topbar-heading">
+            <h1 class="page-title">Billing &amp; Payments</h1>
+            <p class="page-subtitle">
+              Track daily revenue, pending invoices, and insurance claims.
+            </p>
+          </div>
+
+          <div class="topbar-search">
+            <span style="font-size: 0.8rem; opacity: 0.8">🔍</span>
+            <input
+              type="text"
+              placeholder="Search by patient name, invoice no., UHID or phone…"
+            />
+          </div>
+
+          <div class="topbar-right">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="avatar-small" title="Finance Admin">RA</div>
+          </div>
+        </header>
+
+        <!-- Filters -->
+        <section class="filters-row">
+          <button class="filter-pill primary">
+            <span class="status-dot"></span>
+            <strong>Today</strong>
+            <span>· 02 Mar 2026</span>
+          </button>
+
+          <button class="filter-pill">
+            Billing type:
+            <strong>OPD, IPD, Pharmacy</strong>
+          </button>
+
+          <button class="filter-pill">
+            Payment mode:
+            <strong>Cash / Card / UPI</strong>
+          </button>
+
+          <button class="filter-pill">
+            Status:
+            <strong>All (Paid, Pending, Overdue)</strong>
+          </button>
+
+          <button class="filter-pill">
+            Insurance:
+            <strong>All</strong>
+          </button>
+        </section>
+
+        <!-- Summary cards -->
+        <section class="cards-row">
+          <article class="stat-card">
+            <div class="stat-label">Total billing (today)</div>
+            <div class="stat-main">
+              <div class="stat-value">₹ 3,24,500</div>
+              <span class="stat-chip positive">+12% vs yesterday</span>
+            </div>
+            <div class="stat-foot">OPD ₹ 1,05,000 · IPD ₹ 1,68,000 · Pharmacy ₹ 51,500</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Collected</div>
+            <div class="stat-main">
+              <div class="stat-value">₹ 2,61,800</div>
+              <span class="stat-chip positive">81% collection rate</span>
+            </div>
+            <div class="stat-foot">UPI 42% · Card 33% · Cash 25%</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Pending &amp; overdue</div>
+            <div class="stat-main">
+              <div class="stat-value">₹ 62,700</div>
+              <span class="stat-chip warning">₹ 18,200 overdue &gt; 7 days</span>
+            </div>
+            <div class="stat-foot">OPD ₹ 21,400 · IPD ₹ 41,300</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Insurance claims</div>
+            <div class="stat-main">
+              <div class="stat-value">₹ 7,92,000</div>
+              <span class="stat-chip">68 active claims</span>
+            </div>
+            <div class="stat-foot">Approved: 32 · Pending: 29 · Queried: 7</div>
+          </article>
+        </section>
+
+        <!-- Main grid: table + side column -->
+        <section class="grid-main">
+          <!-- Left: Recent invoices -->
+          <section class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Recent invoices</div>
+                <div class="card-subtitle">
+                  Includes OPD, IPD discharge, and pharmacy bills generated today.
+                </div>
+              </div>
+              <div class="card-header-actions">
+                <span class="pill-outline">View: Today</span>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Invoice #</th>
+                    <th>Patient</th>
+                    <th>Type</th>
+                    <th>Doctor / Dept</th>
+                    <th>Amount</th>
+                    <th>Mode</th>
+                    <th>Status</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>INV-240312</td>
+                    <td>Rahul Verma</td>
+                    <td>OPD</td>
+                    <td>Dr. Meera · Cardio</td>
+                    <td>₹ 2,400</td>
+                    <td>UPI</td>
+                    <td>
+                      <span class="status-pill status-paid">
+                        <span class="dot"></span>
+                        Paid
+                      </span>
+                    </td>
+                    <td>09:38 AM</td>
+                  </tr>
+                  <tr>
+                    <td>INV-240313</td>
+                    <td>Anita Sharma</td>
+                    <td>OPD</td>
+                    <td>Dr. K. Rao · Ortho</td>
+                    <td>₹ 3,150</td>
+                    <td>Card</td>
+                    <td>
+                      <span class="status-pill status-paid">
+                        <span class="dot"></span>
+                        Paid
+                      </span>
+                    </td>
+                    <td>09:52 AM</td>
+                  </tr>
+                  <tr>
+                    <td>INV-240314</td>
+                    <td>Mohammed Ali</td>
+                    <td>Tele-consult</td>
+                    <td>Dr. S. Nair · Ped</td>
+                    <td>₹ 900</td>
+                    <td>UPI</td>
+                    <td>
+                      <span class="status-pill status-paid">
+                        <span class="dot"></span>
+                        Paid
+                      </span>
+                    </td>
+                    <td>10:10 AM</td>
+                  </tr>
+                  <tr>
+                    <td>INV-240315</td>
+                    <td>Lakshmi Prasad</td>
+                    <td>OPD</td>
+                    <td>Dr. Meera · Cardio</td>
+                    <td>₹ 1,750</td>
+                    <td>Cash</td>
+                    <td>
+                      <span class="status-pill status-pending">
+                        <span class="dot"></span>
+                        Pending
+                      </span>
+                    </td>
+                    <td>10:24 AM</td>
+                  </tr>
+                  <tr>
+                    <td>INV-240316</td>
+                    <td>Joseph Mathew</td>
+                    <td>IPD – Discharge</td>
+                    <td>Ward C2</td>
+                    <td>₹ 68,900</td>
+                    <td>Insurance</td>
+                    <td>
+                      <span class="status-pill status-partial">
+                        <span class="dot"></span>
+                        Partially paid
+                      </span>
+                    </td>
+                    <td>11:05 AM</td>
+                  </tr>
+                  <tr>
+                    <td>INV-240317</td>
+                    <td>Priya Singh</td>
+                    <td>Pharmacy</td>
+                    <td>OPD Counter</td>
+                    <td>₹ 1,230</td>
+                    <td>UPI</td>
+                    <td>
+                      <span class="status-pill status-paid">
+                        <span class="dot"></span>
+                        Paid
+                      </span>
+                    </td>
+                    <td>11:19 AM</td>
+                  </tr>
+                  <tr>
+                    <td>INV-240318</td>
+                    <td>Vikram Desai</td>
+                    <td>IPD – Interim</td>
+                    <td>ICU · Bed 3</td>
+                    <td>₹ 21,600</td>
+                    <td>Cash</td>
+                    <td>
+                      <span class="status-pill status-overdue">
+                        <span class="dot"></span>
+                        Overdue
+                      </span>
+                    </td>
+                    <td>11:42 AM</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Right column: Outstanding + KPIs -->
+          <section>
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Outstanding invoices (next 7 days)</div>
+                  <div class="card-subtitle">
+                    Prioritise follow-ups to improve cash flow.
+                  </div>
+                </div>
+                <span class="pill-outline">Auto-reminders ON</span>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      ₹ 18,200 · Joseph Mathew
+                    </div>
+                    <div class="list-secondary">
+                      IPD discharge · Due in 1 day
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Overdue</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      ₹ 9,500 · Vikram Desai
+                    </div>
+                    <div class="list-secondary">
+                      ICU interim · Due today
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Critical</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      ₹ 6,800 · Anita Sharma
+                    </div>
+                    <div class="list-secondary">
+                      OPD package · Due in 2 days
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Pending</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      ₹ 28,200 · Corporate – ABC Tech
+                    </div>
+                    <div class="list-secondary">
+                      Monthly credit · Due in 4 days
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Corporate</span>
+                </li>
+              </ul>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Billing KPIs</div>
+                  <div class="card-subtitle">
+                    Track key finance metrics for the last 30 days.
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>Collection efficiency</span>
+                    <span>93%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      style="width: 93%;"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>Average days to collect</span>
+                    <span>8.4 days</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill warn"
+                      style="width: 60%;"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>Claim rejection rate</span>
+                    <span>4.2%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill danger"
+                      style="width: 30%;"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Quick billing actions</div>
+                  <div class="card-subtitle">
+                    Shortcuts for the front desk &amp; finance team.
+                  </div>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <button class="btn-primary">
+                  ➕ Create new invoice
+                </button>
+                <button class="btn-ghost">
+                  🧾 Print / email receipt
+                </button>
+                <button class="btn-ghost">
+                  🏦 Post insurance payment
+                </button>
+                <button class="btn-ghost">
+                  📊 Export billing report (CSV)
+                </button>
+
+                <p class="helper-text">
+                  Later, connect these buttons to your backend APIs
+                  (create invoice, add payment, export report, etc.).
+                </p>
+              </div>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/billing.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

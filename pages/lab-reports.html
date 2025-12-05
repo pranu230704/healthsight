@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HealthSight – Lab Reports</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      :root {
+        --bg-main: #020617;
+        --bg-elevated: #020b1f;
+        --bg-elevated-soft: #020817;
+        --accent: #22c55e;
+        --accent-soft: rgba(34, 197, 94, 0.15);
+        --accent-border: rgba(34, 197, 94, 0.5);
+        --border-subtle: #1f2937;
+        --text-main: #f9fafb;
+        --text-muted: #9ca3af;
+        --danger: #f97373;
+        --danger-soft: rgba(248, 113, 113, 0.15);
+        --warn: #facc15;
+        --warn-soft: rgba(250, 204, 21, 0.12);
+        --info-soft: rgba(59, 130, 246, 0.15);
+        --radius-lg: 14px;
+        --radius-full: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: radial-gradient(circle at top left, #0b1120, #020617 55%);
+        color: var(--text-main);
+      }
+
+      .layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ───── Sidebar ───── */
+
+      .sidebar {
+        width: 260px;
+        background: radial-gradient(circle at top left, #020817, #020617 55%);
+        border-right: 1px solid var(--border-subtle);
+        padding: 1.5rem 1.25rem 1.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        inset: 0 auto 0 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .brand-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #22c55e, #16a34a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #022c22;
+        font-size: 1.3rem;
+      }
+
+      .brand-text-title {
+        font-weight: 600;
+        font-size: 1.15rem;
+      }
+
+      .brand-text-sub {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .sidebar-nav {
+        list-style: none;
+        margin: 0;
+        padding: 0.6rem 0;
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .sidebar-item {
+        margin: 0;
+      }
+
+      .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1.1rem;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        border-radius: 999px;
+        position: relative;
+      }
+
+      .sidebar-link::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #4b5563;
+      }
+
+      .sidebar-link:hover {
+        background: rgba(15, 23, 42, 0.95);
+        color: var(--text-main);
+      }
+
+      .sidebar-link.active {
+        background: linear-gradient(90deg, #0f172a, #020617);
+        color: var(--accent);
+      }
+
+      .sidebar-link.active::before {
+        background: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        opacity: 0.7;
+      }
+
+      /* ───── Main Content ───── */
+
+      .main {
+        margin-left: 260px;
+        flex: 1;
+        padding: 1.5rem 2rem 2rem;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .topbar-heading {
+        flex: 0 0 auto;
+      }
+
+      .page-title {
+        font-size: 1.4rem;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .page-subtitle {
+        margin: 0.1rem 0 0;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      .topbar-search {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 999px;
+        padding: 0.45rem 0.9rem;
+        border: 1px solid rgba(31, 41, 55, 0.9);
+      }
+
+      .topbar-search input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text-main);
+        font-size: 0.85rem;
+      }
+
+      .topbar-search input::placeholder {
+        color: #6b7280;
+      }
+
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .icon-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        border: 1px solid #1f2937;
+        background: radial-gradient(circle at top left, #020818, #020617);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        color: #9ca3af;
+        cursor: pointer;
+      }
+
+      .icon-btn:hover {
+        border-color: #374151;
+        color: var(--text-main);
+      }
+
+      .avatar-small {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #1d4ed8, #0f172a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      /* ───── Filters + Summary ───── */
+
+      .filters-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.1rem;
+      }
+
+      .filter-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid #1f2937;
+        background: rgba(15, 23, 42, 0.85);
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+
+      .filter-pill strong {
+        color: var(--text-main);
+      }
+
+      .filter-pill.primary {
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .filter-pill .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+      }
+
+      /* Summary cards */
+      .cards-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        padding: 0.9rem 1rem;
+        border-radius: var(--radius-lg);
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid #1f2937;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      .stat-label {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .stat-main {
+        display: flex;
+        align-items: baseline;
+        gap: 0.3rem;
+      }
+
+      .stat-value {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .stat-chip {
+        font-size: 0.7rem;
+        padding: 0.13rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        color: #e5e7eb;
+      }
+
+      .stat-foot {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      .stat-chip.positive {
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .stat-chip.warning {
+        border-color: rgba(250, 204, 21, 0.5);
+        background: var(--warn-soft);
+        color: var(--warn);
+      }
+
+      .stat-chip.danger {
+        border-color: rgba(248, 113, 113, 0.5);
+        background: var(--danger-soft);
+        color: var(--danger);
+      }
+
+      /* ───── Main grid: table + side column ───── */
+
+      .grid-main {
+        display: grid;
+        grid-template-columns: minmax(0, 2.3fr) minmax(0, 1.1fr);
+        gap: 1.2rem;
+        align-items: start;
+      }
+
+      .card {
+        background: rgba(15, 23, 42, 0.95);
+        border-radius: var(--radius-lg);
+        border: 1px solid #1f2937;
+        padding: 1rem 1rem 0.8rem;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.7rem;
+      }
+
+      .card-title {
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .card-subtitle {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+
+      .card-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+
+      .pill-outline {
+        border-radius: 999px;
+        border: 1px dashed #374151;
+        padding: 0.15rem 0.6rem;
+        font-size: 0.7rem;
+        color: #9ca3af;
+      }
+
+      .pill {
+        border-radius: 999px;
+        padding: 0.18rem 0.6rem;
+        font-size: 0.7rem;
+        border: 1px solid #1f2937;
+        color: #e5e7eb;
+        background: rgba(15, 23, 42, 0.9);
+        cursor: pointer;
+      }
+
+      .pill.active {
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      /* Table */
+
+      .table-wrapper {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #111827;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.78rem;
+      }
+
+      thead {
+        background: #020617;
+      }
+
+      th,
+      td {
+        padding: 0.6rem 0.7rem;
+        text-align: left;
+        border-bottom: 1px solid #020617;
+        color: #e5e7eb;
+      }
+
+      th {
+        font-weight: 500;
+        color: #9ca3af;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+      }
+
+      tbody tr:nth-child(even) {
+        background: rgba(15, 23, 42, 0.7);
+      }
+
+      tbody tr:hover {
+        background: rgba(31, 41, 55, 0.95);
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.2rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.7rem;
+      }
+
+      .status-pill .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+      }
+
+      .status-complete {
+        background: var(--accent-soft);
+        color: #bbf7d0;
+      }
+
+      .status-complete .dot {
+        background: var(--accent);
+      }
+
+      .status-pending {
+        background: var(--info-soft);
+        color: #bfdbfe;
+      }
+
+      .status-pending .dot {
+        background: #60a5fa;
+      }
+
+      .status-inprogress {
+        background: rgba(129, 140, 248, 0.18);
+        color: #c7d2fe;
+      }
+
+      .status-inprogress .dot {
+        background: #818cf8;
+      }
+
+      .status-critical {
+        background: var(--danger-soft);
+        color: #fecaca;
+      }
+
+      .status-critical .dot {
+        background: var(--danger);
+      }
+
+      .tag {
+        border-radius: 999px;
+        padding: 0.12rem 0.6rem;
+        font-size: 0.7rem;
+        border: 1px solid #1f2937;
+        color: #e5e7eb;
+      }
+
+      .tag-soft {
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .list {
+        margin: 0.4rem 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .list-item {
+        padding: 0.55rem 0.2rem;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        border-bottom: 1px solid #020617;
+      }
+
+      .list-primary {
+        font-size: 0.8rem;
+      }
+
+      .list-secondary {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+      }
+
+      .quick-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        margin-top: 0.6rem;
+      }
+
+      .btn-primary,
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-main);
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border-color: #22c55e;
+        color: #022c22;
+        font-weight: 500;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.06);
+      }
+
+      .btn-ghost {
+        border-color: #1f2937;
+        background: rgba(15, 23, 42, 0.9);
+        color: #e5e7eb;
+      }
+
+      .btn-ghost:hover {
+        border-color: #374151;
+      }
+
+      .helper-text {
+        margin-top: 0.3rem;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      /* TAT bars */
+
+      .kpi-row {
+        margin-bottom: 0.65rem;
+      }
+
+      .kpi-label {
+        font-size: 0.76rem;
+        display: flex;
+        justify-content: space-between;
+        color: var(--text-muted);
+        margin-bottom: 0.25rem;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 6px;
+        border-radius: 999px;
+        background: #020617;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #22c55e, #16a34a);
+      }
+
+      .progress-fill.warn {
+        background: linear-gradient(90deg, #fbbf24, #f97316);
+      }
+
+      .progress-fill.danger {
+        background: linear-gradient(90deg, #f97373, #ef4444);
+      }
+
+      /* ───── Responsive ───── */
+
+      @media (max-width: 1024px) {
+        .cards-row {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-main {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .main {
+          margin-left: 0;
+          padding: 1rem;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .topbar-right {
+          justify-content: flex-end;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- ───────── Sidebar ───────── -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-avatar">H</div>
+          <div>
+            <div class="brand-text-title">HealthSight</div>
+            <div class="brand-text-sub">Hospital Admin</div>
+          </div>
+        </div>
+
+        <nav>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="appointments.html" class="sidebar-link">Appointments</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="doctors.html" class="sidebar-link">Doctors</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="patients.html" class="sidebar-link">Patients</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="pharmacy.html" class="sidebar-link">Pharmacy</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="billing.html" class="sidebar-link">Billing</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="lab-reports.html" class="sidebar-link active"
+                >Lab Reports</a
+              >
+            </li>
+            <li class="sidebar-item">
+              <a href="settings.html" class="sidebar-link">Settings</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          Lab view • TAT tracking for <strong>today</strong>
+        </div>
+      </aside>
+
+      <!-- ───────── Main Content ───────── -->
+      <main class="main">
+        <!-- Top bar -->
+        <header class="topbar">
+          <div class="topbar-heading">
+            <h1 class="page-title">Lab Reports</h1>
+            <p class="page-subtitle">
+              Monitor pending tests, TAT, and critical results across all labs.
+            </p>
+          </div>
+
+          <div class="topbar-search">
+            <span style="font-size: 0.8rem; opacity: 0.8">🔍</span>
+            <input
+            id="lab-reports-search"
+            type="text"
+            placeholder="Search by patient, test, UHID…"
+            />
+          </div>
+
+          <div class="topbar-right">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="avatar-small" title="Lab Admin">RA</div>
+          </div>
+        </header>
+
+        <!-- Filters -->
+        <section class="filters-row">
+          <button class="filter-pill primary">
+            <span class="status-dot"></span>
+            <strong>Today</strong>
+            <span>· 02 Mar 2026</span>
+          </button>
+
+          <button class="filter-pill">
+            Department:
+            <strong>All labs</strong>
+          </button>
+
+          <button class="filter-pill">
+            Status:
+            <strong>Pending, In progress, Critical</strong>
+          </button>
+
+          <button class="filter-pill">
+            Sample type:
+            <strong>Blood, Urine, Swab</strong>
+          </button>
+
+          <button class="filter-pill">
+            Priority:
+            <strong>All (STAT &amp; Routine)</strong>
+          </button>
+        </section>
+
+        <!-- Summary cards -->
+        <section class="cards-row">
+          <article class="stat-card">
+            <div class="stat-label">Total tests (today)</div>
+            <div class="stat-main">
+              <div class="stat-value">326</div>
+              <span class="stat-chip positive">+11% vs yesterday</span>
+            </div>
+            <div class="stat-foot">
+              Pathology 164 · Radiology 92 · Microbiology 70
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Pending / In progress</div>
+            <div class="stat-main">
+              <div class="stat-value">74</div>
+              <span class="stat-chip warning">22 near TAT limit</span>
+            </div>
+            <div class="stat-foot">Avg time elapsed: 28 min</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Critical results</div>
+            <div class="stat-main">
+              <div class="stat-value">9</div>
+              <span class="stat-chip danger">3 not acknowledged</span>
+            </div>
+            <div class="stat-foot">ICU 4 · ER 2 · Wards 3</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Average TAT</div>
+            <div class="stat-main">
+              <div class="stat-value">41 min</div>
+              <span class="stat-chip">Target: &lt; 45 min</span>
+            </div>
+            <div class="stat-foot">STAT: 21 min · Routine: 52 min</div>
+          </article>
+        </section>
+
+        <!-- Main grid: table + side column -->
+        <section class="grid-main">
+          <!-- Left: Lab queue -->
+          <section class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Lab report queue</div>
+                <div class="card-subtitle">
+                  From sample collected to report verified and released.
+                </div>
+              </div>
+              <div class="card-header-actions">
+                <span class="pill-outline">View: All labs · Today</span>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Report ID</th>
+                    <th>Patient</th>
+                    <th>Test</th>
+                    <th>Dept.</th>
+                    <th>Sample</th>
+                    <th>Status</th>
+                    <th>TAT</th>
+                    <th>Doctor</th>
+                  </tr>
+                </thead>
+                <tbody id="lab-reports-table-body">
+                  <tr>
+                    <td>LAB-9821</td>
+                    <td>Rahul Verma</td>
+                    <td>ECG</td>
+                    <td>Cardio</td>
+                    <td>ECG</td>
+                    <td>
+                      <span class="status-pill status-complete">
+                        <span class="dot"></span>
+                        Verified
+                      </span>
+                    </td>
+                    <td>24 min</td>
+                    <td>Dr. Meera</td>
+                  </tr>
+                  <tr>
+                    <td>LAB-9822</td>
+                    <td>Priya Singh</td>
+                    <td>CT Abdomen</td>
+                    <td>Radiology</td>
+                    <td>CT</td>
+                    <td>
+                      <span class="status-pill status-critical">
+                        <span class="dot"></span>
+                        Critical – notify
+                      </span>
+                    </td>
+                    <td>56 min</td>
+                    <td>Dr. Joseph</td>
+                  </tr>
+                  <tr>
+                    <td>LAB-9823</td>
+                    <td>J. Mathew</td>
+                    <td>CBC</td>
+                    <td>Pathology</td>
+                    <td>Blood</td>
+                    <td>
+                      <span class="status-pill status-inprogress">
+                        <span class="dot"></span>
+                        In progress
+                      </span>
+                    </td>
+                    <td>18 min</td>
+                    <td>–</td>
+                  </tr>
+                  <tr>
+                    <td>LAB-9824</td>
+                    <td>Anita Sharma</td>
+                    <td>X-Ray Knee</td>
+                    <td>Radiology</td>
+                    <td>X-Ray</td>
+                    <td>
+                      <span class="status-pill status-complete">
+                        <span class="dot"></span>
+                        Ready
+                      </span>
+                    </td>
+                    <td>32 min</td>
+                    <td>Dr. Joseph</td>
+                  </tr>
+                  <tr>
+                    <td>LAB-9825</td>
+                    <td>Vikram Desai</td>
+                    <td>ABG</td>
+                    <td>ICU Lab</td>
+                    <td>Blood</td>
+                    <td>
+                      <span class="status-pill status-pending">
+                        <span class="dot"></span>
+                        Awaiting sign-off
+                      </span>
+                    </td>
+                    <td>12 min</td>
+                    <td>Dr. Menon</td>
+                  </tr>
+                  <tr>
+                    <td>LAB-9826</td>
+                    <td>Kavya Rao</td>
+                    <td>Urine R/M</td>
+                    <td>Pathology</td>
+                    <td>Urine</td>
+                    <td>
+                      <span class="status-pill status-pending">
+                        <span class="dot"></span>
+                        Sample received
+                      </span>
+                    </td>
+                    <td>8 min</td>
+                    <td>–</td>
+                  </tr>
+                  <tr>
+                    <td>LAB-9827</td>
+                    <td>Rohan Gupta</td>
+                    <td>Blood culture</td>
+                    <td>Microbiology</td>
+                    <td>Blood</td>
+                    <td>
+                      <span class="status-pill status-inprogress">
+                        <span class="dot"></span>
+                        Incubating
+                      </span>
+                    </td>
+                    <td>3h 22m</td>
+                    <td>–</td>
+                  </tr>
+                  <tr>
+                    <td>LAB-9828</td>
+                    <td>Joseph Mathew</td>
+                    <td>Chest X-Ray</td>
+                    <td>Radiology</td>
+                    <td>X-Ray</td>
+                    <td>
+                      <span class="status-pill status-complete">
+                        <span class="dot"></span>
+                        Reported
+                      </span>
+                    </td>
+                    <td>27 min</td>
+                    <td>Dr. Joseph</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Right column: Critical + TAT + actions -->
+          <section>
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Critical alerts</div>
+                  <div class="card-subtitle">
+                    Results that must be acknowledged quickly by clinicians.
+                  </div>
+                </div>
+                <span class="pill-outline">Escalation rules ON</span>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      LAB-9822 · Priya Singh · CT Abdomen
+                    </div>
+                    <div class="list-secondary">
+                      Radiology · Flag: free air · ER bed 4
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Awaiting call</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      LAB-9831 · Vikram Desai · ABG
+                    </div>
+                    <div class="list-secondary">
+                      ICU · Severe acidosis · Vent settings review
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">ICU</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      LAB-9834 · Rohan Gupta · Troponin I
+                    </div>
+                    <div class="list-secondary">
+                      Cardio · Elevated · Seen in ER
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">To notify</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      LAB-9836 · J. Mathew · K+ level
+                    </div>
+                    <div class="list-secondary">
+                      Pathology · Hyperkalemia · Ward C2
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Ward</span>
+                </li>
+              </ul>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">TAT overview</div>
+                  <div class="card-subtitle">
+                    Turnaround times by lab type (last 24 hours).
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>Pathology (routine)</span>
+                    <span>39 min</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 78%;"></div>
+                  </div>
+                </div>
+
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>Radiology (X-ray / CT / MRI)</span>
+                    <span>52 min</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill warn" style="width: 90%;"></div>
+                  </div>
+                </div>
+
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>STAT / emergency panel</span>
+                    <span>21 min</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 55%;"></div>
+                  </div>
+                </div>
+
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>Microbiology (culture)</span>
+                    <span>24 h+</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill danger"
+                      style="width: 100%;"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Quick lab actions</div>
+                  <div class="card-subtitle">
+                    Shortcuts for lab supervisors and technicians.
+                  </div>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <button class="btn-primary">
+                  ➕ Register new test / sample
+                </button>
+                <button class="btn-ghost">
+                  ✅ Mark report as verified
+                </button>
+                <button class="btn-ghost">
+                  📞 Log critical result notification
+                </button>
+                <button class="btn-ghost">
+                  📤 Export lab TAT report
+                </button>
+
+                <p class="helper-text">
+                  Later, connect these buttons to your backend APIs
+                  (create sample, update status, log call, export TAT, etc.).
+                </p>
+              </div>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/lab-reports.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

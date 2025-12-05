@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HealthSight – Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      :root {
+        --bg-main: #020617;
+        --bg-elevated: #020b1f;
+        --bg-elevated-soft: #020817;
+        --accent: #22c55e;
+        --accent-soft: rgba(34, 197, 94, 0.15);
+        --accent-border: rgba(34, 197, 94, 0.5);
+        --border-subtle: #1f2937;
+        --text-main: #f9fafb;
+        --text-muted: #9ca3af;
+        --danger: #f97373;
+        --danger-soft: rgba(248, 113, 113, 0.15);
+        --warn: #facc15;
+        --warn-soft: rgba(250, 204, 21, 0.12);
+        --info-soft: rgba(59, 130, 246, 0.15);
+        --radius-lg: 14px;
+        --radius-full: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: radial-gradient(circle at top left, #0b1120, #020617 55%);
+        color: var(--text-main);
+      }
+
+      .layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ───── Sidebar ───── */
+
+      .sidebar {
+        width: 260px;
+        background: radial-gradient(circle at top left, #020817, #020617 55%);
+        border-right: 1px solid var(--border-subtle);
+        padding: 1.5rem 1.25rem 1.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        inset: 0 auto 0 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .brand-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #22c55e, #16a34a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #022c22;
+        font-size: 1.3rem;
+      }
+
+      .brand-text-title {
+        font-weight: 600;
+        font-size: 1.15rem;
+      }
+
+      .brand-text-sub {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .sidebar-nav {
+        list-style: none;
+        margin: 0;
+        padding: 0.6rem 0;
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .sidebar-item {
+        margin: 0;
+      }
+
+      .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1.1rem;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        border-radius: 999px;
+        position: relative;
+      }
+
+      .sidebar-link::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #4b5563;
+      }
+
+      .sidebar-link:hover {
+        background: rgba(15, 23, 42, 0.95);
+        color: var(--text-main);
+      }
+
+      .sidebar-link.active {
+        background: linear-gradient(90deg, #0f172a, #020617);
+        color: var(--accent);
+      }
+
+      .sidebar-link.active::before {
+        background: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        opacity: 0.7;
+      }
+
+      /* ───── Main Content ───── */
+
+      .main {
+        margin-left: 260px;
+        flex: 1;
+        padding: 1.5rem 2rem 2rem;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .topbar-heading {
+        flex: 0 0 auto;
+      }
+
+      .page-title {
+        font-size: 1.4rem;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .page-subtitle {
+        margin: 0.1rem 0 0;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      .topbar-search {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 999px;
+        padding: 0.45rem 0.9rem;
+        border: 1px solid rgba(31, 41, 55, 0.9);
+      }
+
+      .topbar-search input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text-main);
+        font-size: 0.85rem;
+      }
+
+      .topbar-search input::placeholder {
+        color: #6b7280;
+      }
+
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .icon-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        border: 1px solid #1f2937;
+        background: radial-gradient(circle at top left, #020818, #020617);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        color: #9ca3af;
+        cursor: pointer;
+      }
+
+      .icon-btn:hover {
+        border-color: #374151;
+        color: var(--text-main);
+      }
+
+      .avatar-small {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #1d4ed8, #0f172a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      /* ───── Settings layout ───── */
+
+      .settings-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.1fr);
+        gap: 1.2rem;
+        align-items: start;
+      }
+
+      .card {
+        background: rgba(15, 23, 42, 0.95);
+        border-radius: var(--radius-lg);
+        border: 1px solid #1f2937;
+        padding: 1rem 1rem 0.9rem;
+        margin-bottom: 1rem;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.7rem;
+      }
+
+      .card-title {
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .card-subtitle {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+
+      .pill-outline {
+        border-radius: 999px;
+        border: 1px dashed #374151;
+        padding: 0.15rem 0.6rem;
+        font-size: 0.7rem;
+        color: #9ca3af;
+      }
+
+      /* Forms */
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem 1rem;
+      }
+
+      .form-row {
+        margin-bottom: 0.75rem;
+      }
+
+      .form-label {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-bottom: 0.25rem;
+      }
+
+      .form-label span {
+        color: #fca5a5;
+      }
+
+      .input,
+      .select,
+      .textarea {
+        width: 100%;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 10px;
+        border: 1px solid #1f2937;
+        padding: 0.45rem 0.6rem;
+        font-size: 0.84rem;
+        color: var(--text-main);
+        outline: none;
+      }
+
+      .input::placeholder,
+      .textarea::placeholder {
+        color: #6b7280;
+      }
+
+      .input:focus,
+      .select:focus,
+      .textarea:focus {
+        border-color: var(--accent-border);
+        box-shadow: 0 0 0 1px var(--accent-soft);
+      }
+
+      .textarea {
+        min-height: 70px;
+        resize: vertical;
+      }
+
+      /* Toggles & checkboxes */
+
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.45rem 0.3rem;
+        border-bottom: 1px solid #020617;
+      }
+
+      .toggle-text-main {
+        font-size: 0.82rem;
+      }
+
+      .toggle-text-sub {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+      }
+
+      .toggle {
+        position: relative;
+        width: 40px;
+        height: 20px;
+      }
+
+      .toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: #111827;
+        border-radius: 999px;
+        transition: 0.2s;
+      }
+
+      .slider:before {
+        content: "";
+        position: absolute;
+        height: 14px;
+        width: 14px;
+        left: 3px;
+        bottom: 3px;
+        background-color: #6b7280;
+        border-radius: 50%;
+        transition: 0.2s;
+      }
+
+      .toggle input:checked + .slider {
+        background-color: #16a34a;
+      }
+
+      .toggle input:checked + .slider:before {
+        transform: translateX(18px);
+        background-color: #f9fafb;
+      }
+
+      .checkbox-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .checkbox-row input {
+        margin-top: 0.15rem;
+        accent-color: #22c55e;
+      }
+
+      .checkbox-label-main {
+        font-size: 0.8rem;
+      }
+
+      .checkbox-label-sub {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+      }
+
+      /* Buttons */
+
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.6rem;
+      }
+
+      .btn-primary,
+      .btn-ghost,
+      .btn-danger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-main);
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border-color: #22c55e;
+        color: #022c22;
+        font-weight: 500;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.06);
+      }
+
+      .btn-ghost {
+        border-color: #1f2937;
+        background: rgba(15, 23, 42, 0.9);
+        color: #e5e7eb;
+      }
+
+      .btn-ghost:hover {
+        border-color: #374151;
+      }
+
+      .btn-danger {
+        border-color: rgba(248, 113, 113, 0.7);
+        background: var(--danger-soft);
+        color: #fecaca;
+      }
+
+      .btn-danger:hover {
+        border-color: #fecaca;
+      }
+
+      .helper-text {
+        margin-top: 0.3rem;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      /* Right column widgets */
+
+      .list {
+        margin: 0.4rem 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .list-item {
+        padding: 0.55rem 0.2rem;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        border-bottom: 1px solid #020617;
+      }
+
+      .list-primary {
+        font-size: 0.8rem;
+      }
+
+      .list-secondary {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+      }
+
+      .tag {
+        border-radius: 999px;
+        padding: 0.12rem 0.6rem;
+        font-size: 0.7rem;
+        border: 1px solid #1f2937;
+        color: #e5e7eb;
+      }
+
+      .tag-soft {
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.18rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.7rem;
+      }
+
+      .status-pill .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+      }
+
+      .status-ok {
+        background: var(--accent-soft);
+        color: #bbf7d0;
+      }
+
+      .status-ok .dot {
+        background: var(--accent);
+      }
+
+      .status-issue {
+        background: var(--warn-soft);
+        color: #fef9c3;
+      }
+
+      .status-issue .dot {
+        background: var(--warn);
+      }
+
+      .status-error {
+        background: var(--danger-soft);
+        color: #fecaca;
+      }
+
+      .status-error .dot {
+        background: var(--danger);
+      }
+
+      /* ───── Responsive ───── */
+
+      @media (max-width: 1024px) {
+        .settings-layout {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .main {
+          margin-left: 0;
+          padding: 1rem;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .topbar-right {
+          justify-content: flex-end;
+        }
+
+        .form-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- ───────── Sidebar ───────── -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-avatar">H</div>
+          <div>
+            <div class="brand-text-title">HealthSight</div>
+            <div class="brand-text-sub">Hospital Admin</div>
+          </div>
+        </div>
+
+        <nav>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="appointments.html" class="sidebar-link">Appointments</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="doctors.html" class="sidebar-link">Doctors</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="patients.html" class="sidebar-link">Patients</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="pharmacy.html" class="sidebar-link">Pharmacy</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="billing.html" class="sidebar-link">Billing</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="lab-reports.html" class="sidebar-link">Lab Reports</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="settings.html" class="sidebar-link active">Settings</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          Settings • Only admins can change some options
+        </div>
+      </aside>
+
+      <!-- ───────── Main Content ───────── -->
+      <main class="main">
+        <!-- Top bar -->
+        <header class="topbar">
+          <div class="topbar-heading">
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">
+              Control hospital profile, notifications, roles, and system
+              preferences.
+            </p>
+          </div>
+
+          <div class="topbar-search">
+            <span style="font-size: 0.8rem; opacity: 0.8">🔍</span>
+            <input
+              type="text"
+              placeholder="Search settings (users, notifications, integrations…)"
+            />
+          </div>
+
+          <div class="topbar-right">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Help">❔</button>
+            <div class="avatar-small" title="Admin User">AD</div>
+          </div>
+        </header>
+
+        <!-- Settings grid -->
+        <section class="settings-layout">
+          <!-- Left column: forms & toggles -->
+          <section>
+            <!-- Hospital profile -->
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Hospital profile</div>
+                  <div class="card-subtitle">
+                    Basic information that appears on reports, bills, and
+                    messages.
+                  </div>
+                </div>
+                <span class="pill-outline">Visible to staff</span>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-row">
+                  <div class="form-label">
+                    Hospital name <span>*</span>
+                  </div>
+                  <input
+                    class="input"
+                    type="text"
+                    placeholder="Example: HealthSight Multispeciality Hospital"
+                  />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-label">Branch code</div>
+                  <input
+                    class="input"
+                    type="text"
+                    placeholder="Example: HYD-01"
+                  />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-label">City</div>
+                  <input class="input" type="text" placeholder="Hyderabad" />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-label">Time zone</div>
+                  <select class="select">
+                    <option>IST (Asia/Kolkata)</option>
+                    <option>GST (Asia/Dubai)</option>
+                    <option>CET (Europe/Berlin)</option>
+                    <option>EST (America/New_York)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row" style="margin-top: 0.5rem;">
+                <div class="form-label">Address (for reports &amp; bills)</div>
+                <textarea
+                  class="textarea"
+                  placeholder="Door no, street, area, city, state, pincode…"
+                ></textarea>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn-primary">💾 Save hospital profile</button>
+                <button class="btn-ghost">↺ Reset</button>
+              </div>
+
+              <p class="helper-text">
+                Later, connect this section to your backend API that updates the
+                hospital master table.
+              </p>
+            </article>
+
+            <!-- Notifications -->
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Notifications &amp; alerts</div>
+                  <div class="card-subtitle">
+                    Choose which alerts go to admins vs. doctors vs. nurses.
+                  </div>
+                </div>
+                <span class="pill-outline">Per-role rules</span>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-text-main">
+                    Appointment reminders (SMS / WhatsApp)
+                  </div>
+                  <div class="toggle-text-sub">
+                    Send automatic reminders to patients before visit.
+                  </div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-text-main">
+                    Critical lab result alerts
+                  </div>
+                  <div class="toggle-text-sub">
+                    Notify assigned doctor &amp; ICU / ER when result is
+                    critical.
+                  </div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-text-main">
+                    Pharmacy low stock warnings
+                  </div>
+                  <div class="toggle-text-sub">
+                    Email and in-app alerts to purchase &amp; store in-charge.
+                  </div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-text-main">
+                    Daily summary email to management
+                  </div>
+                  <div class="toggle-text-sub">
+                    Appointments, admissions, discharges, billing &amp; TAT.
+                  </div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div style="margin-top: 0.7rem;">
+                <div class="form-label">Delivery channels</div>
+                <div class="checkbox-row">
+                  <input type="checkbox" checked />
+                  <div>
+                    <div class="checkbox-label-main">In-app notifications</div>
+                    <div class="checkbox-label-sub">
+                      Shown inside HealthSight dashboard.
+                    </div>
+                  </div>
+                </div>
+                <div class="checkbox-row">
+                  <input type="checkbox" checked />
+                  <div>
+                    <div class="checkbox-label-main">Email</div>
+                    <div class="checkbox-label-sub">
+                      For management &amp; admin users.
+                    </div>
+                  </div>
+                </div>
+                <div class="checkbox-row">
+                  <input type="checkbox" />
+                  <div>
+                    <div class="checkbox-label-main">WhatsApp / SMS</div>
+                    <div class="checkbox-label-sub">
+                      Requires integration with your BSP (Aisensy, etc.).
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn-primary">💾 Save notification rules</button>
+              </div>
+            </article>
+
+          </section>
+
+          <!-- Right column: users, integrations, security -->
+          <section>
+            <!-- User roles -->
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">User roles &amp; access</div>
+                  <div class="card-subtitle">
+                    Snapshot of who can access what in HealthSight.
+                  </div>
+                </div>
+                <span class="pill-outline">Go to user management</span>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">Super admins</div>
+                    <div class="list-secondary">
+                      2 users · Full access (settings, billing, all data)
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">2 users</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">Doctors</div>
+                    <div class="list-secondary">
+                      46 users · OPD, IPD, labs, limited billing
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Role-based</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">Nurses &amp; ward staff</div>
+                    <div class="list-secondary">
+                      62 users · Patients, labs, vitals · No billing
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Limited</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">Front desk &amp; billing</div>
+                    <div class="list-secondary">
+                      14 users · Appointments, billing, receipts
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Finance</span>
+                </li>
+              </ul>
+
+              <div class="btn-row">
+                <button class="btn-ghost">
+                  👤 Add new user / role
+                </button>
+              </div>
+            </article>
+
+            <!-- Integrations -->
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Integrations</div>
+                  <div class="card-subtitle">
+                    Connect billing, lab devices, WhatsApp, and more.
+                  </div>
+                </div>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">Billing gateway</div>
+                    <div class="list-secondary">
+                      Razorpay (LIVE) · Linked to OPD &amp; IPD billing
+                    </div>
+                  </div>
+                  <span class="status-pill status-ok">
+                    <span class="dot"></span>
+                    Connected
+                  </span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">WhatsApp BSP</div>
+                    <div class="list-secondary">
+                      Aisensy · For reminders &amp; notifications
+                    </div>
+                  </div>
+                  <span class="status-pill status-ok">
+                    <span class="dot"></span>
+                    Connected
+                  </span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">Lab machines / LIS</div>
+                    <div class="list-secondary">
+                      Biochemistry &amp; hematology interfaces partially mapped
+                    </div>
+                  </div>
+                  <span class="status-pill status-issue">
+                    <span class="dot"></span>
+                    Mapping pending
+                  </span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">External reporting (Excel/PDF)</div>
+                    <div class="list-secondary">
+                      Download enabled · Auto email not configured
+                    </div>
+                  </div>
+                  <span class="status-pill status-issue">
+                    <span class="dot"></span>
+                    Partial
+                  </span>
+                </li>
+              </ul>
+
+              <div class="btn-row">
+                <button class="btn-ghost">🔗 Manage integrations</button>
+              </div>
+            </article>
+
+            <!-- Security & backup -->
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Security &amp; backup</div>
+                  <div class="card-subtitle">
+                    Data safety, login settings, and backup snapshots.
+                  </div>
+                </div>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-text-main">
+                    Two-factor authentication (2FA) for admins
+                  </div>
+                  <div class="toggle-text-sub">
+                    Recommended · OTP via SMS / authenticator app.
+                  </div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-text-main">
+                    Auto logout inactive users
+                  </div>
+                  <div class="toggle-text-sub">
+                    After 20 minutes of inactivity (recommended).
+                  </div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div style="margin-top: 0.7rem;">
+                <div class="form-label">Last login activity</div>
+                <p class="helper-text">
+                  Admin (you): Today · 10:12 AM · IP 192.168.10.14 · Chrome on
+                  Windows.
+                </p>
+              </div>
+
+              <div style="margin-top: 0.7rem;">
+                <div class="form-label">Backups</div>
+                <p class="helper-text">
+                  Last full backup: Today · 03:15 AM · Stored in secure cloud
+                  storage.
+                </p>
+                <p class="helper-text">
+                  Retention policy: 30 days daily backup · Monthly snapshots for
+                  1 year.
+                </p>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn-ghost">⬇️ Download latest backup</button>
+                <button class="btn-ghost">☁️ Trigger manual backup</button>
+                <button class="btn-danger">⚠️ Revoke all active sessions</button>
+              </div>
+
+              <p class="helper-text">
+                Later you can wire these actions to security APIs (logout all,
+                export backup link, trigger snapshot, etc.).
+              </p>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/settings.js"></script>
+  </body>
+</html>

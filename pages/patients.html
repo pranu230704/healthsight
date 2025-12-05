@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HealthSight – Patients</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/css/patients.css" />
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/sidebar.css" />
+
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- ───────── Sidebar ───────── -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-avatar">H</div>
+          <div>
+            <div class="brand-text-title">HealthSight</div>
+            <div class="brand-text-sub">Hospital Admin</div>
+          </div>
+        </div>
+
+        <nav>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="appointments.html" class="sidebar-link">Appointments</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="doctors.html" class="sidebar-link">Doctors</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="patients.html" class="sidebar-link active">Patients</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="pharmacy.html" class="sidebar-link">Pharmacy</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="billing.html" class="sidebar-link">Billing</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="lab-reports.html" class="sidebar-link">Lab Reports</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="settings.html" class="sidebar-link">Settings</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          Patient view • OPD &amp; IPD for <strong>today</strong>
+        </div>
+      </aside>
+
+      <!-- ───────── Main Content ───────── -->
+      <main class="main">
+        <!-- Top bar -->
+        <header class="topbar">
+          <div class="topbar-heading">
+            <h1 class="page-title">Patients</h1>
+            <p class="page-subtitle">
+              See all OPD &amp; admitted patients with their current status.
+            </p>
+          </div>
+
+          <div class="topbar-search">
+            <span style="font-size: 0.8rem; opacity: 0.8">🔍</span>
+            <input
+            id="patients-search"
+            type="text"
+            placeholder="Search by name, UHID, department…"
+            />
+
+          </div>
+
+          <div class="topbar-right">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="avatar-small" title="Patient Admin">RA</div>
+          </div>
+        </header>
+
+        <!-- Filters -->
+        <section class="filters-row">
+          <button class="filter-pill primary">
+            <span class="status-dot"></span>
+            <strong>Today</strong>
+            <span>· OPD &amp; IPD</span>
+          </button>
+
+          <button class="filter-pill">
+            Type:
+            <strong>OPD, IPD, ER</strong>
+          </button>
+
+          <button class="filter-pill">
+            Status:
+            <strong>Admitted, Waiting, Discharged</strong>
+          </button>
+
+          <button class="filter-pill">
+            Risk:
+            <strong>All (Normal / High risk)</strong>
+          </button>
+
+          <button class="filter-pill">
+            Department:
+            <strong>All</strong>
+          </button>
+        </section>
+
+        <!-- Summary cards -->
+        <section class="cards-row">
+          <article class="stat-card">
+            <div class="stat-label">Total patients (today)</div>
+            <div class="stat-main">
+              <div class="stat-value">138</div>
+              <span class="stat-chip positive">+12 vs yesterday</span>
+            </div>
+            <div class="stat-foot">
+              OPD 104 · IPD 34 · ER 6
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Currently admitted</div>
+            <div class="stat-main">
+              <div class="stat-value">52</div>
+              <span class="stat-chip warning">ICU 7 · HDU 5</span>
+            </div>
+            <div class="stat-foot">
+              Avg. stay: 2.4 days
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Discharges planned</div>
+            <div class="stat-main">
+              <div class="stat-value">18</div>
+              <span class="stat-chip danger">5 pending clearance</span>
+            </div>
+            <div class="stat-foot">
+              Pharmacy &amp; billing to be closed
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Follow-ups due</div>
+            <div class="stat-main">
+              <div class="stat-value">29</div>
+              <span class="stat-chip">8 not yet booked</span>
+            </div>
+            <div class="stat-foot">
+              SMS reminder queued for this evening
+            </div>
+          </article>
+        </section>
+
+        <!-- Main grid: patient list + side panels -->
+        <section class="grid-main">
+          <!-- Left: patient list -->
+          <section class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Patient list</div>
+                <div class="card-subtitle">
+                  OPD visitors &amp; IPD admitted patients for the current day.
+                </div>
+              </div>
+              <div class="card-header-actions">
+                <span class="pill-outline">View: Today</span>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>UHID</th>
+                    <th>Patient</th>
+                    <th>Type</th>
+                    <th>Dept.</th>
+                    <th>Doctor</th>
+                    <th>Status</th>
+                    <th>Last event</th>
+                  </tr>
+                </thead>
+                <tbody id="patients-table-body">
+                  <tr>
+                    <td>UHID-20261</td>
+                    <td>Rahul Verma</td>
+                    <td>OPD</td>
+                    <td>Cardio</td>
+                    <td>Dr. Meera</td>
+                    <td>
+                      <span class="status-pill status-active">
+                        <span class="dot"></span>
+                        In consult
+                      </span>
+                    </td>
+                    <td>10:08 AM · Entered room</td>
+                  </tr>
+                  <tr>
+                    <td>UHID-20262</td>
+                    <td>Anita Sharma</td>
+                    <td>OPD</td>
+                    <td>Ortho</td>
+                    <td>Dr. Karthik</td>
+                    <td>
+                      <span class="status-pill status-waiting">
+                        <span class="dot"></span>
+                        Waiting
+                      </span>
+                    </td>
+                    <td>09:56 AM · Checked-in</td>
+                  </tr>
+                  <tr>
+                    <td>UHID-20263</td>
+                    <td>Mohammed Ali</td>
+                    <td>OPD</td>
+                    <td>Pedia</td>
+                    <td>Dr. Nair</td>
+                    <td>
+                      <span class="status-pill status-active">
+                        <span class="dot"></span>
+                        Completed
+                      </span>
+                    </td>
+                    <td>09:48 AM · Left OPD</td>
+                  </tr>
+                  <tr>
+                    <td>UHID-20237</td>
+                    <td>Vikram Desai</td>
+                    <td>IPD</td>
+                    <td>ICU</td>
+                    <td>Dr. Menon</td>
+                    <td>
+                      <span class="status-pill status-highrisk">
+                        <span class="dot"></span>
+                        ICU – ventilated
+                      </span>
+                    </td>
+                    <td>10:02 AM · ABG sample sent</td>
+                  </tr>
+                  <tr>
+                    <td>UHID-20218</td>
+                    <td>Priya Singh</td>
+                    <td>IPD</td>
+                    <td>Ward C2</td>
+                    <td>Dr. Karthik</td>
+                    <td>
+                      <span class="status-pill status-active">
+                        <span class="dot"></span>
+                        Admitted
+                      </span>
+                    </td>
+                    <td>09:30 AM · Shifted from ER</td>
+                  </tr>
+                  <tr>
+                    <td>UHID-20189</td>
+                    <td>Joseph Mathew</td>
+                    <td>IPD</td>
+                    <td>Ward B1</td>
+                    <td>Dr. Meera</td>
+                    <td>
+                      <span class="status-pill status-active">
+                        <span class="dot"></span>
+                        Under observation
+                      </span>
+                    </td>
+                    <td>08:55 AM · Morning rounds done</td>
+                  </tr>
+                  <tr>
+                    <td>UHID-20177</td>
+                    <td>Rohan Gupta</td>
+                    <td>ER</td>
+                    <td>Emergency</td>
+                    <td>Dr. Gupta</td>
+                    <td>
+                      <span class="status-pill status-waiting">
+                        <span class="dot"></span>
+                        In triage
+                      </span>
+                    </td>
+                    <td>10:11 AM · Triage started</td>
+                  </tr>
+                  <tr>
+                    <td>UHID-20120</td>
+                    <td>Lakshmi Prasad</td>
+                    <td>OPD</td>
+                    <td>Cardio</td>
+                    <td>Dr. Meera</td>
+                    <td>
+                      <span class="status-pill status-discharged">
+                        <span class="dot"></span>
+                        Discharged today
+                      </span>
+                    </td>
+                    <td>08:20 AM · Discharge summary signed</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Right: high risk, follow-ups, quick actions -->
+          <section>
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">High-risk / ICU patients</div>
+                  <div class="card-subtitle">
+                    Quickly see who needs the closest monitoring.
+                  </div>
+                </div>
+                <span class="pill-outline">7 flagged</span>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      UHID-20237 · Vikram Desai
+                    </div>
+                    <div class="list-secondary">
+                      ICU Bed B3 · Ventilated · On inotropes
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">ICU</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      UHID-20218 · Priya Singh
+                    </div>
+                    <div class="list-secondary">
+                      Ward C2 · Post-op Ortho · Pain &amp; vitals close watch
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Post-op</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      UHID-20189 · Joseph Mathew
+                    </div>
+                    <div class="list-secondary">
+                      Ward B1 · Cardiac obs · Lab results pending
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Cardio</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      UHID-20177 · Rohan Gupta
+                    </div>
+                    <div class="list-secondary">
+                      ER · Chest pain · Troponin report awaited
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">ER</span>
+                </li>
+              </ul>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem;">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Follow-ups due today</div>
+                  <div class="card-subtitle">
+                    Patients expected to revisit OPD or tele-consult.
+                  </div>
+                </div>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Kavya Rao · Gen Med follow-up
+                    </div>
+                    <div class="list-secondary">
+                      Suggested: 10 days · Due today · OPD token not booked
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Not booked</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Anil Kumar · Ortho review
+                    </div>
+                    <div class="list-secondary">
+                      Knee pain · Slot 4:40 PM with Dr. Karthik
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Booked</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Meenakshi Devi · Diabetes review
+                    </div>
+                    <div class="list-secondary">
+                      HBA1c &amp; labs done · Tele-consult preferred
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Tele-consult</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Pradeep Singh · Post-surgery check
+                    </div>
+                    <div class="list-secondary">
+                      Sutures removal · Due tomorrow · Reminder scheduled
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Tomorrow</span>
+                </li>
+              </ul>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem;">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Quick patient actions</div>
+                  <div class="card-subtitle">
+                    Front desk &amp; ward shortcuts.
+                  </div>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <button class="btn-primary">
+                  ➕ Register new patient
+                </button>
+                <button class="btn-ghost">
+                  🛏️ Admit / transfer to ward
+                </button>
+                <button class="btn-ghost">
+                  📅 Book OPD / follow-up slot
+                </button>
+                <button class="btn-ghost">
+                  📄 Download patient summary
+                </button>
+
+                <p class="helper-text">
+                  Later, connect these buttons to your backend APIs
+                  (create patient, admit/transfer, schedule visit, export PDF, etc.).
+                </p>
+              </div>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/patients.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

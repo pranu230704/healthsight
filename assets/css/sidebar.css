@@ -1,0 +1,119 @@
+/* =========================
+   SIDEBAR STYLES
+   (Uses CSS variables from base.css)
+========================= */
+
+.sidebar {
+  width: 260px;
+  background: radial-gradient(circle at top left, #020817, #020617 55%);
+  border-right: 1px solid var(--border-subtle);
+  padding: 1.5rem 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: 0 auto 0 0;
+}
+
+/* Brand / Logo */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1.8rem;
+}
+
+.brand-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: radial-gradient(circle, #22c55e, #16a34a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #022c22;
+  font-size: 1.3rem;
+}
+
+.brand-text-title {
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.brand-text-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Nav list */
+
+.sidebar-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0.6rem 0;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.sidebar-item {
+  margin: 0;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1.1rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+/* Small dot indicator */
+
+.sidebar-link::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #4b5563;
+  flex-shrink: 0;
+}
+
+.sidebar-link:hover {
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--text-main);
+}
+
+/* Active link */
+
+.sidebar-link.active {
+  background: linear-gradient(90deg, #0f172a, #020617);
+  color: var(--accent);
+}
+
+.sidebar-link.active::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* Footer text in sidebar */
+
+.sidebar-footer {
+  margin-top: auto;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* Responsive: hide sidebar on small screens */
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}

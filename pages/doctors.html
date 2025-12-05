@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HealthSight – Doctors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      :root {
+        --bg-main: #020617;
+        --bg-elevated: #020b1f;
+        --bg-elevated-soft: #020817;
+        --accent: #22c55e;
+        --accent-soft: rgba(34, 197, 94, 0.15);
+        --accent-border: rgba(34, 197, 94, 0.5);
+        --border-subtle: #1f2937;
+        --text-main: #f9fafb;
+        --text-muted: #9ca3af;
+        --danger: #f97373;
+        --danger-soft: rgba(248, 113, 113, 0.15);
+        --warn: #facc15;
+        --warn-soft: rgba(250, 204, 21, 0.12);
+        --info-soft: rgba(59, 130, 246, 0.15);
+        --radius-lg: 14px;
+        --radius-full: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: radial-gradient(circle at top left, #0b1120, #020617 55%);
+        color: var(--text-main);
+      }
+
+      .layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ───── Sidebar ───── */
+
+      .sidebar {
+        width: 260px;
+        background: radial-gradient(circle at top left, #020817, #020617 55%);
+        border-right: 1px solid var(--border-subtle);
+        padding: 1.5rem 1.25rem 1.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        inset: 0 auto 0 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .brand-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #22c55e, #16a34a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #022c22;
+        font-size: 1.3rem;
+      }
+
+      .brand-text-title {
+        font-weight: 600;
+        font-size: 1.15rem;
+      }
+
+      .brand-text-sub {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .sidebar-nav {
+        list-style: none;
+        margin: 0;
+        padding: 0.6rem 0;
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .sidebar-item {
+        margin: 0;
+      }
+
+      .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1.1rem;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        border-radius: 999px;
+        position: relative;
+      }
+
+      .sidebar-link::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #4b5563;
+      }
+
+      .sidebar-link:hover {
+        background: rgba(15, 23, 42, 0.95);
+        color: var(--text-main);
+      }
+
+      .sidebar-link.active {
+        background: linear-gradient(90deg, #0f172a, #020617);
+        color: var(--accent);
+      }
+
+      .sidebar-link.active::before {
+        background: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        opacity: 0.7;
+      }
+
+      /* ───── Main Content ───── */
+
+      .main {
+        margin-left: 260px;
+        flex: 1;
+        padding: 1.5rem 2rem 2rem;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .topbar-heading {
+        flex: 0 0 auto;
+      }
+
+      .page-title {
+        font-size: 1.4rem;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .page-subtitle {
+        margin: 0.1rem 0 0;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      .topbar-search {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 999px;
+        padding: 0.45rem 0.9rem;
+        border: 1px solid rgba(31, 41, 55, 0.9);
+      }
+
+      .topbar-search input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text-main);
+        font-size: 0.85rem;
+      }
+
+      .topbar-search input::placeholder {
+        color: #6b7280;
+      }
+
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .icon-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        border: 1px solid #1f2937;
+        background: radial-gradient(circle at top left, #020818, #020617);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        color: #9ca3af;
+        cursor: pointer;
+      }
+
+      .icon-btn:hover {
+        border-color: #374151;
+        color: var(--text-main);
+      }
+
+      .avatar-small {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #1d4ed8, #0f172a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      /* ───── Filters + Summary ───── */
+
+      .filters-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.1rem;
+      }
+
+      .filter-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid #1f2937;
+        background: rgba(15, 23, 42, 0.85);
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+
+      .filter-pill strong {
+        color: var(--text-main);
+      }
+
+      .filter-pill.primary {
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .filter-pill .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+      }
+
+      /* Summary cards */
+      .cards-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        padding: 0.9rem 1rem;
+        border-radius: var(--radius-lg);
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid #1f2937;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      .stat-label {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .stat-main {
+        display: flex;
+        align-items: baseline;
+        gap: 0.3rem;
+      }
+
+      .stat-value {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .stat-chip {
+        font-size: 0.7rem;
+        padding: 0.13rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        color: #e5e7eb;
+      }
+
+      .stat-foot {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      .stat-chip.positive {
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .stat-chip.warning {
+        border-color: rgba(250, 204, 21, 0.5);
+        background: var(--warn-soft);
+        color: var(--warn);
+      }
+
+      .stat-chip.danger {
+        border-color: rgba(248, 113, 113, 0.5);
+        background: var(--danger-soft);
+        color: var(--danger);
+      }
+
+      /* ───── Main grid: table + side column ───── */
+
+      .grid-main {
+        display: grid;
+        grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.1fr);
+        gap: 1.2rem;
+        align-items: start;
+      }
+
+      .card {
+        background: rgba(15, 23, 42, 0.95);
+        border-radius: var(--radius-lg);
+        border: 1px solid #1f2937;
+        padding: 1rem 1rem 0.8rem;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.7rem;
+      }
+
+      .card-title {
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .card-subtitle {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+
+      .card-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+
+      .pill-outline {
+        border-radius: 999px;
+        border: 1px dashed #374151;
+        padding: 0.15rem 0.6rem;
+        font-size: 0.7rem;
+        color: #9ca3af;
+      }
+
+      .pill {
+        border-radius: 999px;
+        padding: 0.18rem 0.6rem;
+        font-size: 0.7rem;
+        border: 1px solid #1f2937;
+        color: #e5e7eb;
+        background: rgba(15, 23, 42, 0.9);
+        cursor: pointer;
+      }
+
+      .pill.active {
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      /* Table */
+
+      .table-wrapper {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #111827;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.78rem;
+      }
+
+      thead {
+        background: #020617;
+      }
+
+      th,
+      td {
+        padding: 0.6rem 0.7rem;
+        text-align: left;
+        border-bottom: 1px solid #020617;
+        color: #e5e7eb;
+      }
+
+      th {
+        font-weight: 500;
+        color: #9ca3af;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+      }
+
+      tbody tr:nth-child(even) {
+        background: rgba(15, 23, 42, 0.7);
+      }
+
+      tbody tr:hover {
+        background: rgba(31, 41, 55, 0.95);
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.2rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.7rem;
+      }
+
+      .status-pill .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+      }
+
+      .status-on-duty {
+        background: var(--accent-soft);
+        color: #bbf7d0;
+      }
+
+      .status-on-duty .dot {
+        background: var(--accent);
+      }
+
+      .status-on-call {
+        background: var(--info-soft);
+        color: #bfdbfe;
+      }
+
+      .status-on-call .dot {
+        background: #60a5fa;
+      }
+
+      .status-off-duty {
+        background: var(--warn-soft);
+        color: #fef9c3;
+      }
+
+      .status-off-duty .dot {
+        background: var(--warn);
+      }
+
+      .tag {
+        border-radius: 999px;
+        padding: 0.12rem 0.6rem;
+        font-size: 0.7rem;
+        border: 1px solid #1f2937;
+        color: #e5e7eb;
+      }
+
+      .tag-soft {
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .list {
+        margin: 0.4rem 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .list-item {
+        padding: 0.55rem 0.2rem;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        border-bottom: 1px solid #020617;
+      }
+
+      .list-primary {
+        font-size: 0.8rem;
+      }
+
+      .list-secondary {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+      }
+
+      .quick-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        margin-top: 0.6rem;
+      }
+
+      .btn-primary,
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-main);
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border-color: #22c55e;
+        color: #022c22;
+        font-weight: 500;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.06);
+      }
+
+      .btn-ghost {
+        border-color: #1f2937;
+        background: rgba(15, 23, 42, 0.9);
+        color: #e5e7eb;
+      }
+
+      .btn-ghost:hover {
+        border-color: #374151;
+      }
+
+      .helper-text {
+        margin-top: 0.3rem;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      /* ───── Responsive ───── */
+
+      @media (max-width: 1024px) {
+        .cards-row {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-main {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .main {
+          margin-left: 0;
+          padding: 1rem;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .topbar-right {
+          justify-content: flex-end;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- ───────── Sidebar ───────── -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-avatar">H</div>
+          <div>
+            <div class="brand-text-title">HealthSight</div>
+            <div class="brand-text-sub">Hospital Admin</div>
+          </div>
+        </div>
+
+        <nav>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="appointments.html" class="sidebar-link">Appointments</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="doctors.html" class="sidebar-link active">Doctors</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="patients.html" class="sidebar-link">Patients</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="pharmacy.html" class="sidebar-link">Pharmacy</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="billing.html" class="sidebar-link">Billing</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="lab-reports.html" class="sidebar-link">Lab Reports</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="settings.html" class="sidebar-link">Settings</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          Doctors directory • Roster for <strong>today</strong>
+        </div>
+      </aside>
+
+      <!-- ───────── Main Content ───────── -->
+      <main class="main">
+        <!-- Top bar -->
+        <header class="topbar">
+          <div class="topbar-heading">
+            <h1 class="page-title">Doctors &amp; Roster</h1>
+            <p class="page-subtitle">
+              See who is on duty, on call, and available for OPD or rounds.
+            </p>
+          </div>
+
+          <div class="topbar-search">
+            <span style="font-size: 0.8rem; opacity: 0.8">🔍</span>
+            <input
+            id="doctors-search"
+            type="text"
+            placeholder="Search doctors, departments, IDs…"
+            />
+
+          </div>
+
+          <div class="topbar-right">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="avatar-small" title="Roster Admin">RA</div>
+          </div>
+        </header>
+
+        <!-- Filters -->
+        <section class="filters-row">
+          <button class="filter-pill primary">
+            <span class="status-dot"></span>
+            <strong>Today</strong>
+            <span>· Morning &amp; Evening shift</span>
+          </button>
+
+          <button class="filter-pill">
+            Department:
+            <strong>All</strong>
+          </button>
+
+          <button class="filter-pill">
+            Availability:
+            <strong>On duty, On call</strong>
+          </button>
+
+          <button class="filter-pill">
+            Role:
+            <strong>Consultants &amp; Residents</strong>
+          </button>
+
+          <button class="filter-pill">
+            OPD slots:
+            <strong>Available</strong>
+          </button>
+        </section>
+
+        <!-- Summary cards -->
+        <section class="cards-row">
+          <article class="stat-card">
+            <div class="stat-label">Total doctors</div>
+            <div class="stat-main">
+              <div class="stat-value">46</div>
+              <span class="stat-chip">Consultants 18 · Residents 28</span>
+            </div>
+            <div class="stat-foot">Across 12 departments</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">On duty now</div>
+            <div class="stat-main">
+              <div class="stat-value">27</div>
+              <span class="stat-chip positive">OPD &amp; IPD covered</span>
+            </div>
+            <div class="stat-foot">OPD 14 · IPD/Rounds 13</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">On call / backup</div>
+            <div class="stat-main">
+              <div class="stat-value">9</div>
+              <span class="stat-chip warning">ICU &amp; Emergency ready</span>
+            </div>
+            <div class="stat-foot">2 Anaesthesia · 3 ICU · 4 Surgical</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">OPD slots open</div>
+            <div class="stat-main">
+              <div class="stat-value">36</div>
+              <span class="stat-chip danger">Peak 5–7 PM</span>
+            </div>
+            <div class="stat-foot">Tele-consults: 8 free slots</div>
+          </article>
+        </section>
+
+        <!-- Main grid -->
+        <section class="grid-main">
+          <!-- Left: Doctors directory table -->
+          <section class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Doctors directory</div>
+                <div class="card-subtitle">
+                  View speciality, shift, and contact details in one place.
+                </div>
+              </div>
+              <div class="card-header-actions">
+                <span class="pill-outline">Shift: Today · All</span>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Doctor</th>
+                    <th>Code</th>
+                    <th>Speciality</th>
+                    <th>Dept.</th>
+                    <th>Shift</th>
+                    <th>Availability</th>
+                    <th>Ext.</th>
+                  </tr>
+                </thead>
+                <tbody id="doctors-table-body">
+                  <tr>
+                    <td>Dr. Meera Iyer</td>
+                    <td>DOC-101</td>
+                    <td>Consultant – Cardiology</td>
+                    <td>Cardio</td>
+                    <td>09:00–17:00</td>
+                    <td>
+                      <span class="status-pill status-on-duty">
+                        <span class="dot"></span>
+                        On duty (OPD)
+                      </span>
+                    </td>
+                    <td>2103</td>
+                  </tr>
+                  <tr>
+                    <td>Dr. Karthik Rao</td>
+                    <td>DOC-102</td>
+                    <td>Consultant – Orthopedics</td>
+                    <td>Ortho</td>
+                    <td>10:00–18:00</td>
+                    <td>
+                      <span class="status-pill status-on-duty">
+                        <span class="dot"></span>
+                        On duty (OPD)
+                      </span>
+                    </td>
+                    <td>2111</td>
+                  </tr>
+                  <tr>
+                    <td>Dr. S. Nair</td>
+                    <td>DOC-103</td>
+                    <td>Consultant – Pediatrics</td>
+                    <td>Pedia</td>
+                    <td>09:00–14:00</td>
+                    <td>
+                      <span class="status-pill status-on-duty">
+                        <span class="dot"></span>
+                        In rounds
+                      </span>
+                    </td>
+                    <td>2107</td>
+                  </tr>
+                  <tr>
+                    <td>Dr. A. Menon</td>
+                    <td>DOC-104</td>
+                    <td>Consultant – Critical Care</td>
+                    <td>ICU</td>
+                    <td>08:00–20:00</td>
+                    <td>
+                      <span class="status-pill status-on-call">
+                        <span class="dot"></span>
+                        On call (ICU)
+                      </span>
+                    </td>
+                    <td>2201</td>
+                  </tr>
+                  <tr>
+                    <td>Dr. Kavya Rao</td>
+                    <td>DOC-105</td>
+                    <td>Resident – General Medicine</td>
+                    <td>Gen Med</td>
+                    <td>14:00–22:00</td>
+                    <td>
+                      <span class="status-pill status-on-duty">
+                        <span class="dot"></span>
+                        Evening shift
+                      </span>
+                    </td>
+                    <td>2210</td>
+                  </tr>
+                  <tr>
+                    <td>Dr. Rohan Gupta</td>
+                    <td>DOC-106</td>
+                    <td>Resident – Emergency</td>
+                    <td>ER</td>
+                    <td>20:00–08:00</td>
+                    <td>
+                      <span class="status-pill status-off-duty">
+                        <span class="dot"></span>
+                        Off duty (Night)
+                      </span>
+                    </td>
+                    <td>ER Bay</td>
+                  </tr>
+                  <tr>
+                    <td>Dr. Priya Shah</td>
+                    <td>DOC-107</td>
+                    <td>Anaesthetist</td>
+                    <td>OT</td>
+                    <td>On call</td>
+                    <td>
+                      <span class="status-pill status-on-call">
+                        <span class="dot"></span>
+                        OT on call
+                      </span>
+                    </td>
+                    <td>2301</td>
+                  </tr>
+                  <tr>
+                    <td>Dr. Joseph D’Souza</td>
+                    <td>DOC-108</td>
+                    <td>Radiologist</td>
+                    <td>Radiology</td>
+                    <td>10:00–18:00</td>
+                    <td>
+                      <span class="status-pill status-on-duty">
+                        <span class="dot"></span>
+                        Reporting
+                      </span>
+                    </td>
+                    <td>2404</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Right column: On-call & quick actions -->
+          <section>
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">On call today</div>
+                  <div class="card-subtitle">
+                    Critical backup for ICU, ER and OT.
+                  </div>
+                </div>
+                <span class="pill-outline">Auto-alerts enabled</span>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Dr. A. Menon · Critical Care
+                    </div>
+                    <div class="list-secondary">
+                      ICU &amp; HDU · Response time target: &lt; 10 min
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">ICU</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Dr. Priya Shah · Anaesthesia
+                    </div>
+                    <div class="list-secondary">
+                      OT · Emergency surgeries
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">OT</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Dr. Rohan Gupta · Emergency
+                    </div>
+                    <div class="list-secondary">
+                      ER &amp; trauma calls · Night
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">ER</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Dr. Kavya Rao · Gen Medicine
+                    </div>
+                    <div class="list-secondary">
+                      Ward codes &amp; rapid response
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Wards</span>
+                </li>
+              </ul>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Roster overview</div>
+                  <div class="card-subtitle">
+                    Distribution of doctors across key areas.
+                  </div>
+                </div>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">OPD clinics</div>
+                    <div class="list-secondary">
+                      11 doctors · 6 clinics live
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">OPD</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">IPD / ward rounds</div>
+                    <div class="list-secondary">
+                      7 doctors · Morning &amp; evening
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Wards</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">ICU / HDU</div>
+                    <div class="list-secondary">
+                      4 doctors · 24x7 coverage
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">ICU</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">OT &amp; procedures</div>
+                    <div class="list-secondary">
+                      5 surgeons · 2 anaesthetists
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">OT</span>
+                </li>
+              </ul>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Quick doctor actions</div>
+                  <div class="card-subtitle">
+                    Shortcuts for HR / admin and nursing supervisors.
+                  </div>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <button class="btn-primary">
+                  ➕ Add new doctor profile
+                </button>
+                <button class="btn-ghost">
+                  🕒 Assign / edit shift
+                </button>
+                <button class="btn-ghost">
+                  📅 Block OPD slots
+                </button>
+                <button class="btn-ghost">
+                  📤 Export roster (PDF / CSV)
+                </button>
+
+                <p class="helper-text">
+                  Later, link these buttons to your backend APIs
+                  (create doctor, update roster, block slots, export, etc.).
+                </p>
+              </div>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/doctors.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HealthSight – Appointments</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/css/appointments.css" />
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/sidebar.css" />
+
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- ───────── Sidebar ───────── -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-avatar">H</div>
+          <div>
+            <div class="brand-text-title">HealthSight</div>
+            <div class="brand-text-sub">Hospital Admin</div>
+          </div>
+        </div>
+
+        <nav>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="dashboard.html" class="sidebar-link">
+                Dashboard
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a href="appointments.html" class="sidebar-link active">
+                Appointments
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a href="doctors.html" class="sidebar-link">Doctors</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="patients.html" class="sidebar-link">Patients</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="pharmacy.html" class="sidebar-link">Pharmacy</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="billing.html" class="sidebar-link">Billing</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="lab-reports.html" class="sidebar-link">Lab Reports</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="settings.html" class="sidebar-link">Settings</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          Appointments view • Last sync <strong>2 min ago</strong>
+        </div>
+      </aside>
+
+      <!-- ───────── Main Content ───────── -->
+      <main class="main">
+        <!-- Top bar -->
+        <header class="topbar">
+          <div class="topbar-heading">
+            <h1 class="page-title">Appointments</h1>
+            <p class="page-subtitle">
+              Manage today’s schedule, reschedules, and no-shows in one place.
+            </p>
+          </div>
+
+          <div class="topbar-search">
+            <span style="font-size: 0.8rem; opacity: 0.8">🔍</span>
+            <input
+            id="appointments-search"
+            type="text"
+            placeholder="Search by patient, doctor, token…"
+            />
+          </div>
+
+          <div class="topbar-right">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="avatar-small" title="Admin">RA</div>
+          </div>
+        </header>
+
+        <!-- Filters -->
+        <section class="filters-row">
+          <button class="filter-pill primary">
+            <span class="status-dot"></span>
+            <strong>Today</strong>
+            <span>· 02 Mar 2026</span>
+          </button>
+
+          <button class="filter-pill">
+            Doctor:
+            <strong>All</strong>
+          </button>
+
+          <button class="filter-pill">
+            Department:
+            <strong>All</strong>
+          </button>
+
+          <button class="filter-pill">
+            Status:
+            <strong>Scheduled, Completed</strong>
+          </button>
+
+          <button class="filter-pill">
+            Slots:
+            <strong>Morning & Evening</strong>
+          </button>
+        </section>
+
+        <!-- Summary cards -->
+        <section class="cards-row">
+          <article class="stat-card">
+            <div class="stat-label">Total Appointments (Today)</div>
+            <div class="stat-main">
+              <div class="stat-value">46</div>
+              <span class="stat-chip positive">+8 vs yesterday</span>
+            </div>
+            <div class="stat-foot">32 OPD · 14 Tele-consult</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Checked-in</div>
+            <div class="stat-main">
+              <div class="stat-value">29</div>
+              <span class="stat-chip positive">63% progress</span>
+            </div>
+            <div class="stat-foot">Average waiting time: 9 mins</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">No-shows / Cancelled</div>
+            <div class="stat-main">
+              <div class="stat-value">5</div>
+              <span class="stat-chip warning">Auto-notify pending</span>
+            </div>
+            <div class="stat-foot">3 no-shows · 2 cancelled</div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">High-priority</div>
+            <div class="stat-main">
+              <div class="stat-value">7</div>
+              <span class="stat-chip danger">2 waiting &gt; 20m</span>
+            </div>
+            <div class="stat-foot">ICU follow-ups · Emergency review</div>
+          </article>
+        </section>
+
+        <!-- Main grid: table + side column -->
+        <section class="grid-main">
+          <!-- Left: Appointments table -->
+          <section class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Today’s appointment list</div>
+                <div class="card-subtitle">
+                  Double-click a row to open full visit details.
+                </div>
+              </div>
+              <div class="card-header-actions">
+                <span class="pill-outline">Show: All doctors</span>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Patient</th>
+                    <th>UHID</th>
+                    <th>Doctor</th>
+                    <th>Dept.</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Room</th>
+                  </tr>
+                </thead>
+                <tbody id="appointments-table-body">
+                  <tr>
+                    <td>09:15 AM</td>
+                    <td>Rahul Verma</td>
+                    <td>HS-000842</td>
+                    <td>Dr. Meera I.</td>
+                    <td>Cardiology</td>
+                    <td>OPD</td>
+                    <td>
+                      <span class="status-pill status-completed">
+                        <span class="dot"></span>
+                        Completed
+                      </span>
+                    </td>
+                    <td>C-102</td>
+                  </tr>
+                  <tr>
+                    <td>09:30 AM</td>
+                    <td>Anita Sharma</td>
+                    <td>HS-000843</td>
+                    <td>Dr. K. Rao</td>
+                    <td>Orthopedics</td>
+                    <td>OPD</td>
+                    <td>
+                      <span class="status-pill status-scheduled">
+                        <span class="dot"></span>
+                        Waiting
+                      </span>
+                    </td>
+                    <td>O-06</td>
+                  </tr>
+                  <tr>
+                    <td>10:00 AM</td>
+                    <td>Mohammed Ali</td>
+                    <td>HS-000844</td>
+                    <td>Dr. S. Nair</td>
+                    <td>Pediatrics</td>
+                    <td>Tele-consult</td>
+                    <td>
+                      <span class="status-pill status-completed">
+                        <span class="dot"></span>
+                        Completed
+                      </span>
+                    </td>
+                    <td>Virtual</td>
+                  </tr>
+                  <tr>
+                    <td>10:15 AM</td>
+                    <td>Lakshmi Prasad</td>
+                    <td>HS-000845</td>
+                    <td>Dr. Meera I.</td>
+                    <td>Cardiology</td>
+                    <td>OPD</td>
+                    <td>
+                      <span class="status-pill status-no-show">
+                        <span class="dot"></span>
+                        No-show
+                      </span>
+                    </td>
+                    <td>C-101</td>
+                  </tr>
+                  <tr>
+                    <td>11:00 AM</td>
+                    <td>Joseph Mathew</td>
+                    <td>HS-000846</td>
+                    <td>Dr. K. Rao</td>
+                    <td>Orthopedics</td>
+                    <td>OPD</td>
+                    <td>
+                      <span class="status-pill status-scheduled">
+                        <span class="dot"></span>
+                        Checked-in
+                      </span>
+                    </td>
+                    <td>O-03</td>
+                  </tr>
+                  <tr>
+                    <td>11:30 AM</td>
+                    <td>Priya Singh</td>
+                    <td>HS-000847</td>
+                    <td>Dr. S. Nair</td>
+                    <td>Pediatrics</td>
+                    <td>Tele-consult</td>
+                    <td>
+                      <span class="status-pill status-cancelled">
+                        <span class="dot"></span>
+                        Cancelled
+                      </span>
+                    </td>
+                    <td>Virtual</td>
+                  </tr>
+                  <tr>
+                    <td>12:00 PM</td>
+                    <td>Vikram Desai</td>
+                    <td>HS-000848</td>
+                    <td>Dr. Meera I.</td>
+                    <td>Cardiology</td>
+                    <td>OPD</td>
+                    <td>
+                      <span class="status-pill status-scheduled">
+                        <span class="dot"></span>
+                        In-consultation
+                      </span>
+                    </td>
+                    <td>C-103</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Right column: Upcoming + quick actions -->
+          <section>
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Upcoming slots</div>
+                  <div class="card-subtitle">
+                    Next 6 appointments across all doctors.
+                  </div>
+                </div>
+                <span class="pill-outline">Auto-assign room</span>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">11:45 AM · Rohan Gupta</div>
+                    <div class="list-secondary">Dr. Meera · Cardiology</div>
+                  </div>
+                  <span class="tag tag-soft">High priority</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">12:15 PM · Kavya Rao</div>
+                    <div class="list-secondary">Dr. Nair · Pediatrics</div>
+                  </div>
+                  <span class="tag tag-soft">Tele-consult</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">12:30 PM · S. Krishnan</div>
+                    <div class="list-secondary">Dr. K. Rao · Ortho follow-up</div>
+                  </div>
+                  <span class="tag tag-soft">Follow-up</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">01:00 PM · Walk-in slot</div>
+                    <div class="list-secondary">
+                      Waiting area – OPD counter
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Walk-in</span>
+                </li>
+              </ul>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Quick actions</div>
+                  <div class="card-subtitle">
+                    Common workflows for front desk & call center.
+                  </div>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <button class="btn-primary">
+                  ➕ Book new appointment
+                </button>
+                <button class="btn-ghost">
+                  🔁 Reschedule / move slot
+                </button>
+                <button class="btn-ghost">
+                  📞 Call patient & confirm
+                </button>
+                <button class="btn-ghost">
+                  📤 Export today’s schedule
+                </button>
+
+                <p class="helper-text">
+                  Later, you can connect these buttons to your backend APIs
+                  (create, update, cancel appointment endpoints).
+                </p>
+              </div>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/appointments.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

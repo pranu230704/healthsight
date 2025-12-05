@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HealthSight – Pharmacy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      :root {
+        --bg-main: #020617;
+        --bg-elevated: #020b1f;
+        --bg-elevated-soft: #020817;
+        --accent: #22c55e;
+        --accent-soft: rgba(34, 197, 94, 0.15);
+        --accent-border: rgba(34, 197, 94, 0.5);
+        --border-subtle: #1f2937;
+        --text-main: #f9fafb;
+        --text-muted: #9ca3af;
+        --danger: #f97373;
+        --danger-soft: rgba(248, 113, 113, 0.15);
+        --warn: #facc15;
+        --warn-soft: rgba(250, 204, 21, 0.12);
+        --info-soft: rgba(59, 130, 246, 0.15);
+        --radius-lg: 14px;
+        --radius-full: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: radial-gradient(circle at top left, #0b1120, #020617 55%);
+        color: var(--text-main);
+      }
+
+      .layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ───── Sidebar ───── */
+
+      .sidebar {
+        width: 260px;
+        background: radial-gradient(circle at top left, #020817, #020617 55%);
+        border-right: 1px solid var(--border-subtle);
+        padding: 1.5rem 1.25rem 1.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        inset: 0 auto 0 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .brand-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #22c55e, #16a34a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #022c22;
+        font-size: 1.3rem;
+      }
+
+      .brand-text-title {
+        font-weight: 600;
+        font-size: 1.15rem;
+      }
+
+      .brand-text-sub {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .sidebar-nav {
+        list-style: none;
+        margin: 0;
+        padding: 0.6rem 0;
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .sidebar-item {
+        margin: 0;
+      }
+
+      .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1.1rem;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        border-radius: 999px;
+        position: relative;
+      }
+
+      .sidebar-link::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #4b5563;
+      }
+
+      .sidebar-link:hover {
+        background: rgba(15, 23, 42, 0.95);
+        color: var(--text-main);
+      }
+
+      .sidebar-link.active {
+        background: linear-gradient(90deg, #0f172a, #020617);
+        color: var(--accent);
+      }
+
+      .sidebar-link.active::before {
+        background: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        opacity: 0.7;
+      }
+
+      /* ───── Main Content ───── */
+
+      .main {
+        margin-left: 260px;
+        flex: 1;
+        padding: 1.5rem 2rem 2rem;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .topbar-heading {
+        flex: 0 0 auto;
+      }
+
+      .page-title {
+        font-size: 1.4rem;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .page-subtitle {
+        margin: 0.1rem 0 0;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      .topbar-search {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 999px;
+        padding: 0.45rem 0.9rem;
+        border: 1px solid rgba(31, 41, 55, 0.9);
+      }
+
+      .topbar-search input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text-main);
+        font-size: 0.85rem;
+      }
+
+      .topbar-search input::placeholder {
+        color: #6b7280;
+      }
+
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .icon-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        border: 1px solid #1f2937;
+        background: radial-gradient(circle at top left, #020818, #020617);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        color: #9ca3af;
+        cursor: pointer;
+      }
+
+      .icon-btn:hover {
+        border-color: #374151;
+        color: var(--text-main);
+      }
+
+      .avatar-small {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #1d4ed8, #0f172a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      /* ───── Filters + Summary ───── */
+
+      .filters-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.1rem;
+      }
+
+      .filter-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid #1f2937;
+        background: rgba(15, 23, 42, 0.85);
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+
+      .filter-pill strong {
+        color: var(--text-main);
+      }
+
+      .filter-pill.primary {
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .filter-pill .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+      }
+
+      /* Summary cards */
+
+      .cards-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        padding: 0.9rem 1rem;
+        border-radius: var(--radius-lg);
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid #1f2937;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      .stat-label {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .stat-main {
+        display: flex;
+        align-items: baseline;
+        gap: 0.3rem;
+      }
+
+      .stat-value {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .stat-chip {
+        font-size: 0.7rem;
+        padding: 0.13rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        color: #e5e7eb;
+      }
+
+      .stat-foot {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      .stat-chip.positive {
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .stat-chip.warning {
+        border-color: rgba(250, 204, 21, 0.5);
+        background: var(--warn-soft);
+        color: var(--warn);
+      }
+
+      .stat-chip.danger {
+        border-color: rgba(248, 113, 113, 0.5);
+        background: var(--danger-soft);
+        color: var(--danger);
+      }
+
+      /* ───── Main grid: table + side column ───── */
+
+      .grid-main {
+        display: grid;
+        grid-template-columns: minmax(0, 2.3fr) minmax(0, 1.1fr);
+        gap: 1.2rem;
+        align-items: start;
+      }
+
+      .card {
+        background: rgba(15, 23, 42, 0.95);
+        border-radius: var(--radius-lg);
+        border: 1px solid #1f2937;
+        padding: 1rem 1rem 0.8rem;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.7rem;
+      }
+
+      .card-title {
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .card-subtitle {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+
+      .card-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+
+      .pill-outline {
+        border-radius: 999px;
+        border: 1px dashed #374151;
+        padding: 0.15rem 0.6rem;
+        font-size: 0.7rem;
+        color: #9ca3af;
+      }
+
+      .pill {
+        border-radius: 999px;
+        padding: 0.18rem 0.6rem;
+        font-size: 0.7rem;
+        border: 1px solid #1f2937;
+        color: #e5e7eb;
+        background: rgba(15, 23, 42, 0.9);
+        cursor: pointer;
+      }
+
+      .pill.active {
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      /* Table */
+
+      .table-wrapper {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #111827;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.78rem;
+      }
+
+      thead {
+        background: #020617;
+      }
+
+      th,
+      td {
+        padding: 0.6rem 0.7rem;
+        text-align: left;
+        border-bottom: 1px solid #020617;
+        color: #e5e7eb;
+      }
+
+      th {
+        font-weight: 500;
+        color: #9ca3af;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+      }
+
+      tbody tr:nth-child(even) {
+        background: rgba(15, 23, 42, 0.7);
+      }
+
+      tbody tr:hover {
+        background: rgba(31, 41, 55, 0.95);
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.2rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.7rem;
+      }
+
+      .status-pill .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+      }
+
+      .stock-ok {
+        background: var(--accent-soft);
+        color: #bbf7d0;
+      }
+
+      .stock-ok .dot {
+        background: var(--accent);
+      }
+
+      .stock-low {
+        background: var(--warn-soft);
+        color: #fef9c3;
+      }
+
+      .stock-low .dot {
+        background: var(--warn);
+      }
+
+      .stock-critical {
+        background: var(--danger-soft);
+        color: #fecaca;
+      }
+
+      .stock-critical .dot {
+        background: var(--danger);
+      }
+
+      .tag {
+        border-radius: 999px;
+        padding: 0.12rem 0.6rem;
+        font-size: 0.7rem;
+        border: 1px solid #1f2937;
+        color: #e5e7eb;
+      }
+
+      .tag-soft {
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .list {
+        margin: 0.4rem 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .list-item {
+        padding: 0.55rem 0.2rem;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        border-bottom: 1px solid #020617;
+      }
+
+      .list-primary {
+        font-size: 0.8rem;
+      }
+
+      .list-secondary {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+      }
+
+      .quick-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        margin-top: 0.6rem;
+      }
+
+      .btn-primary,
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-main);
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border-color: #22c55e;
+        color: #022c22;
+        font-weight: 500;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.06);
+      }
+
+      .btn-ghost {
+        border-color: #1f2937;
+        background: rgba(15, 23, 42, 0.9);
+        color: #e5e7eb;
+      }
+
+      .btn-ghost:hover {
+        border-color: #374151;
+      }
+
+      .helper-text {
+        margin-top: 0.3rem;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      /* KPI bars */
+
+      .kpi-row {
+        margin-bottom: 0.65rem;
+      }
+
+      .kpi-label {
+        font-size: 0.76rem;
+        display: flex;
+        justify-content: space-between;
+        color: var(--text-muted);
+        margin-bottom: 0.25rem;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 6px;
+        border-radius: 999px;
+        background: #020617;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #22c55e, #16a34a);
+      }
+
+      .progress-fill.warn {
+        background: linear-gradient(90deg, #fbbf24, #f97316);
+      }
+
+      .progress-fill.danger {
+        background: linear-gradient(90deg, #f97373, #ef4444);
+      }
+
+      /* ───── Responsive ───── */
+
+      @media (max-width: 1024px) {
+        .cards-row {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-main {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .main {
+          margin-left: 0;
+          padding: 1rem;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .topbar-right {
+          justify-content: flex-end;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- ───────── Sidebar ───────── -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-avatar">H</div>
+          <div>
+            <div class="brand-text-title">HealthSight</div>
+            <div class="brand-text-sub">Hospital Admin</div>
+          </div>
+        </div>
+
+        <nav>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="dashboard.html" class="sidebar-link">Dashboard</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="appointments.html" class="sidebar-link">Appointments</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="doctors.html" class="sidebar-link">Doctors</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="patients.html" class="sidebar-link">Patients</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="pharmacy.html" class="sidebar-link active">Pharmacy</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="billing.html" class="sidebar-link">Billing</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="lab-reports.html" class="sidebar-link">Lab Reports</a>
+            </li>
+            <li class="sidebar-item">
+              <a href="settings.html" class="sidebar-link">Settings</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          Pharmacy view • Live stock &amp; issues
+        </div>
+      </aside>
+
+      <!-- ───────── Main Content ───────── -->
+      <main class="main">
+        <!-- Top bar -->
+        <header class="topbar">
+          <div class="topbar-heading">
+            <h1 class="page-title">Pharmacy</h1>
+            <p class="page-subtitle">
+              Track medicine stock, low inventory, expiries and ward issues.
+            </p>
+          </div>
+
+          <div class="topbar-search">
+            <span style="font-size: 0.8rem; opacity: 0.8">🔍</span>
+            <input
+            id="pharmacy-search"
+            type="text"
+            placeholder="Search by name, code, form…"
+            />
+          </div>
+
+          <div class="topbar-right">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="avatar-small" title="Pharmacy Admin">RA</div>
+          </div>
+        </header>
+
+        <!-- Filters -->
+        <section class="filters-row">
+          <button class="filter-pill primary">
+            <span class="status-dot"></span>
+            <strong>Main store</strong>
+            <span>· OPD &amp; IPD</span>
+          </button>
+
+          <button class="filter-pill">
+            Location:
+            <strong>All (Main, ICU, OT)</strong>
+          </button>
+
+          <button class="filter-pill">
+            Category:
+            <strong>All (Drugs, Consumables)</strong>
+          </button>
+
+          <button class="filter-pill">
+            Stock status:
+            <strong>In stock, Low, Out</strong>
+          </button>
+
+          <button class="filter-pill">
+            Expiry:
+            <strong>&lt; 90 days</strong>
+          </button>
+        </section>
+
+        <!-- Summary cards -->
+        <section class="cards-row">
+          <article class="stat-card">
+            <div class="stat-label">Total items</div>
+            <div class="stat-main">
+              <div class="stat-value">842</div>
+              <span class="stat-chip">Drugs 516 · Cons. 326</span>
+            </div>
+            <div class="stat-foot">
+              36 new batches inward this week
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Low stock items</div>
+            <div class="stat-main">
+              <div class="stat-value">47</div>
+              <span class="stat-chip warning">Reorder needed</span>
+            </div>
+            <div class="stat-foot">
+              9 critical life-saving drugs
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Expiring &lt; 30 days</div>
+            <div class="stat-main">
+              <div class="stat-value">23</div>
+              <span class="stat-chip danger">Use / return / write-off</span>
+            </div>
+            <div class="stat-foot">
+              Focus: antibiotics &amp; insulin
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Today’s issues</div>
+            <div class="stat-main">
+              <div class="stat-value">312</div>
+              <span class="stat-chip positive">Billing linked</span>
+            </div>
+            <div class="stat-foot">
+              IPD 148 · OPD 164 · Returns 11
+            </div>
+          </article>
+        </section>
+
+        <!-- Main grid: inventory + side panels -->
+        <section class="grid-main">
+          <!-- Left: pharmacy inventory -->
+          <section class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Pharmacy inventory</div>
+                <div class="card-subtitle">
+                  Live view of key medicines and consumables.
+                </div>
+              </div>
+              <div class="card-header-actions">
+                <span class="pill-outline">Sorted: By stock (low first)</span>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Code</th>
+                    <th>Form</th>
+                    <th>Stock</th>
+                    <th>Unit</th>
+                    <th>Status</th>
+                    <th>Last movement</th>
+                  </tr>
+                </thead>
+                <tbody id="pharmacy-table-body">
+                  <tr>
+                    <td>Inj. Adrenaline 1mg/ml</td>
+                    <td>DRG-001</td>
+                    <td>Ampoule</td>
+                    <td>18</td>
+                    <td>amp</td>
+                    <td>
+                      <span class="status-pill stock-critical">
+                        <span class="dot"></span>
+                        Critical
+                      </span>
+                    </td>
+                    <td>Today · Issued to ER</td>
+                  </tr>
+                  <tr>
+                    <td>Inj. Noradrenaline 4mg/4ml</td>
+                    <td>DRG-002</td>
+                    <td>Vial</td>
+                    <td>32</td>
+                    <td>vial</td>
+                    <td>
+                      <span class="status-pill stock-low">
+                        <span class="dot"></span>
+                        Low stock
+                      </span>
+                    </td>
+                    <td>Today · ICU consumption</td>
+                  </tr>
+                  <tr>
+                    <td>Insulin 40U (Mixed)</td>
+                    <td>DRG-010</td>
+                    <td>Vial</td>
+                    <td>54</td>
+                    <td>vial</td>
+                    <td>
+                      <span class="status-pill stock-low">
+                        <span class="dot"></span>
+                        Low stock
+                      </span>
+                    </td>
+                    <td>Yesterday · OPD &amp; IPD</td>
+                  </tr>
+                  <tr>
+                    <td>Tab. Paracetamol 500mg</td>
+                    <td>DRG-050</td>
+                    <td>Tablet</td>
+                    <td>9,420</td>
+                    <td>tab</td>
+                    <td>
+                      <span class="status-pill stock-ok">
+                        <span class="dot"></span>
+                        In stock
+                      </span>
+                    </td>
+                    <td>Today · Multiple wards</td>
+                  </tr>
+                  <tr>
+                    <td>Tab. Azithromycin 500mg</td>
+                    <td>DRG-061</td>
+                    <td>Tablet</td>
+                    <td>260</td>
+                    <td>tab</td>
+                    <td>
+                      <span class="status-pill stock-ok">
+                        <span class="dot"></span>
+                        In stock
+                      </span>
+                    </td>
+                    <td>Today · OPD Rx</td>
+                  </tr>
+                  <tr>
+                    <td>N/S 500 ml</td>
+                    <td>CON-101</td>
+                    <td>IV fluid</td>
+                    <td>112</td>
+                    <td>bottle</td>
+                    <td>
+                      <span class="status-pill stock-ok">
+                        <span class="dot"></span>
+                        In stock
+                      </span>
+                    </td>
+                    <td>Today · OT &amp; ICU</td>
+                  </tr>
+                  <tr>
+                    <td>3-way cannula (Adult)</td>
+                    <td>CON-142</td>
+                    <td>Consumable</td>
+                    <td>64</td>
+                    <td>pcs</td>
+                    <td>
+                      <span class="status-pill stock-low">
+                        <span class="dot"></span>
+                        Low stock
+                      </span>
+                    </td>
+                    <td>Today · ICU / wards</td>
+                  </tr>
+                  <tr>
+                    <td>N95 mask</td>
+                    <td>CON-200</td>
+                    <td>Consumable</td>
+                    <td>0</td>
+                    <td>pcs</td>
+                    <td>
+                      <span class="status-pill stock-critical">
+                        <span class="dot"></span>
+                        Out of stock
+                      </span>
+                    </td>
+                    <td>Yesterday · Last lot issued</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Right: alerts, expiries, quick actions -->
+          <section>
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Critical stock alerts</div>
+                  <div class="card-subtitle">
+                    Items below minimum level or out of stock.
+                  </div>
+                </div>
+                <span class="pill-outline">Auto email to purchase</span>
+              </div>
+
+              <ul class="list">
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Inj. Adrenaline 1mg/ml
+                    </div>
+                    <div class="list-secondary">
+                      Stock: 18 amp · Min level: 60 amp · ICU &amp; ER usage
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Life-saving</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Inj. Noradrenaline 4mg
+                    </div>
+                    <div class="list-secondary">
+                      Stock: 32 vials · Min level: 80 · ICU priority
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">ICU</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      Insulin 40U (Mixed)
+                    </div>
+                    <div class="list-secondary">
+                      Stock: 54 vials · Min level: 100 · DM clinic days
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Chronic</span>
+                </li>
+                <li class="list-item">
+                  <div>
+                    <div class="list-primary">
+                      N95 mask
+                    </div>
+                    <div class="list-secondary">
+                      Stock: 0 · Min level: 200 · Staff safety
+                    </div>
+                  </div>
+                  <span class="tag tag-soft">Out of stock</span>
+                </li>
+              </ul>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem;">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Expiring soon</div>
+                  <div class="card-subtitle">
+                    Focus on near-expiry to minimize write-offs.
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>Cephalosporin antibiotics</span>
+                    <span>24 days</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill warn" style="width: 70%;"></div>
+                  </div>
+                </div>
+
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>Insulin vials (Lot #INS-22)</span>
+                    <span>17 days</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill warn" style="width: 82%;"></div>
+                  </div>
+                </div>
+
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>Multivitamin syrups</span>
+                    <span>9 days</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill danger" style="width: 94%;"></div>
+                  </div>
+                </div>
+
+                <div class="kpi-row">
+                  <div class="kpi-label">
+                    <span>OT disinfectant solution</span>
+                    <span>34 days</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 55%;"></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card" style="margin-top: 0.9rem;">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Quick pharmacy actions</div>
+                  <div class="card-subtitle">
+                    Store &amp; billing shortcuts.
+                  </div>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <button class="btn-primary">
+                  ➕ Add / inward new stock
+                </button>
+                <button class="btn-ghost">
+                  📦 Issue to ward / OT / ICU
+                </button>
+                <button class="btn-ghost">
+                  🧾 Link issues to patient bill
+                </button>
+                <button class="btn-ghost">
+                  📤 Export stock &amp; expiry report
+                </button>
+
+                <p class="helper-text">
+                  Later, connect these buttons to your backend APIs
+                  (inward entry, ward issue, billing link, stock/export, etc.).
+                </p>
+              </div>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/pharmacy.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>
